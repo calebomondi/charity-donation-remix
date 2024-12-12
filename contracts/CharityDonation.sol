@@ -5,17 +5,15 @@ pragma solidity ^0.8.26;
 contract CharityDonation {
     //Define the contract owner
     address private contractOwner;
-
-    //Define campaign admin and donor role names
-    string private constant ADMIN_ROLE = "ADMIN";
-    string private constant DONOR_ROLE = "DONOR";
+    uint256 private campaign_ID;
+    address private campaign_Address;
 
     //Define the campaign structure
     struct Campaign {
         uint256 campaign_id;
         string title;
         string description;
-        address owner;
+        address campaignAddress;
         uint256 targetAmount;
         uint256 raisedAmount;
         bool isCompleted;
@@ -24,13 +22,13 @@ contract CharityDonation {
     //Map multiple campaigns to a single address
     mapping  (address => Campaign[]) public campaigns;
 
-    //Map address to make  campaign admin
-    mapping  (address => mapping (string => bool)) public adminRoles;
+    //Map campaign address to the campaign admins
+    mapping  (address => mapping (address => bool)) public admins;
 
     //Events to emit
-    event CampaignCreated(uint256 campaign_id, address owner,string title, uint256 targetAmount);
-    event  DonationReceived(address donor, uint256 amount);
-    event FundsWithdrawn(uint256 amount);
+    event CampaignCreated(uint256 campaign_id, address campaignAddress,string title, uint256 targetAmount);
+    event DonationReceived(address donor, uint256 amount);
+    event FundsWithdrawn(uint256 amount, address by, address to);
     event CampaignCompleted(uint256 campaign_id);
 
     //Initialize Contract Owner
@@ -38,8 +36,27 @@ contract CharityDonation {
         contractOwner = msg.sender;
     }
 
+    //Add campaign admins
+    function addCampaignAdmins(address _admin, uint256 _campaignId) public {
+        //check if campaign exists
+        require(campaigns[msg.sender][_campaignId-1].campaign_id == _campaignId,"The Campaigned Specified Does Not Exist!");
+        //add admin to campaign
+        admins[msg.sender][_admin] = true;    
+    }
+
+    //RBAC modifiers
+    modifier onlyWithdraw(address _campaignAddress,uint256 _campaignId) {
+        //check if campaign exits
+        require(campaigns[_campaignAddress].length > 0, "There Is No Campaign By That address!");
+        //check if specified campaign exists
+        require(campaigns[_campaignAddress][_campaignId-1].campaign_id == _campaignId,"The Campaign Specified Does Not Exist!");
+        //check if user is an admin
+        require(admins[_campaignAddress][msg.sender], "Only Admins Can Perform This Action!");
+        _;
+    }
+
     //Create Campaign Method
-    function createCampaign(string memory _title, string memory _description, uint256 _target) public  {
+    function createCampaign(string memory _title, string memory _description,uint256 _target) public  {
         //check if campaign already exists
         unchecked {
             for(uint256 i; i < campaigns[msg.sender].length; i++) {
@@ -57,16 +74,13 @@ contract CharityDonation {
                 campaign_id : campaigns[msg.sender].length + 1,
                 title: _title,
                 description: _description, 
-                owner: msg.sender, 
+                campaignAddress: msg.sender,
                 targetAmount: _target, 
                 raisedAmount  :  0, 
                 isCompleted: false
             }
         );
         campaigns[msg.sender].push(newCampaign);
-
-        //make the campaign creator an admin 
-        adminRoles[msg.sender][ADMIN_ROLE] = true;
 
         //emit event
         emit CampaignCreated(campaigns[msg.sender].length, msg.sender, _title, _target);
@@ -88,11 +102,12 @@ contract CharityDonation {
         require(_amount > 0 , "Amount Cannot be Zero");
         require(msg.value == _amount, "The Amount doesn't Match!");
 
+        //update the campaign raised  amount and close campaign if targeted amount is equal to or is exceeded
+        campaigns[_campaignAddress][_campaignId-1].raisedAmount += _amount;
+
         //transfer ether to the campaign address
         _campaignAddress.transfer(_amount);
 
-        //update the campaign raised  amount and close campaign if targeted amount is equal to or is exceeded
-        campaigns[_campaignAddress][_campaignId-1].raisedAmount += _amount;
         if (campaigns[_campaignAddress][_campaignId-1].raisedAmount >= campaigns[_campaignAddress][_campaignId-1].targetAmount) {
             campaigns[_campaignAddress][_campaignId-1].isCompleted = true;    
         }
@@ -101,4 +116,29 @@ contract CharityDonation {
         emit DonationReceived(msg.sender, _amount);
 
     }
+
+    //set  required admin parameter values
+    function setAdminValues(address _campAddr, uint256 _campId) public {
+        campaign_Address = _campAddr;
+        campaign_ID = _campId;
+    }
+
+    //withdraw funds
+    function withdrawFunds(uint256 _amount, address payable _to) external payable onlyWithdraw(campaign_Address, campaign_ID) {
+        //cannot withdraw 0
+        require(
+            _amount > 0 && _amount < campaigns[campaign_Address][campaign_ID-1].raisedAmount, 
+            "Amount Cannot be Zero Or Excedd The Raised Amount!"
+        );
+        //check if campaign is completed
+        require(campaigns[campaign_Address][campaign_ID-1].isCompleted,"You Can't Withdraw Funds from an Active Campaign");
+        //update campaigns balance
+        campaigns[campaign_Address][campaign_ID-1].raisedAmount -= _amount;
+        //transfer funds to specified address
+        _to.transfer(_amount);
+
+        //emit event
+        emit FundsWithdrawn(_amount,msg.sender,_to);
+    }
+
 }

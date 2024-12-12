@@ -35,7 +35,7 @@
 					{
 						"indexed": false,
 						"internalType": "address",
-						"name": "owner",
+						"name": "campaignAddress",
 						"type": "address"
 					},
 					{
@@ -81,6 +81,18 @@
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "by",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
 					}
 				],
 				"name": "FundsWithdrawn",
@@ -90,16 +102,34 @@
 				"inputs": [
 					{
 						"internalType": "address",
+						"name": "_admin",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					}
+				],
+				"name": "addCampaignAdmins",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
 						"name": "",
 						"type": "address"
 					},
 					{
-						"internalType": "string",
+						"internalType": "address",
 						"name": "",
-						"type": "string"
+						"type": "address"
 					}
 				],
-				"name": "adminRoles",
+				"name": "admins",
 				"outputs": [
 					{
 						"internalType": "bool",
@@ -142,7 +172,7 @@
 					},
 					{
 						"internalType": "address",
-						"name": "owner",
+						"name": "campaignAddress",
 						"type": "address"
 					},
 					{
@@ -209,6 +239,42 @@
 				"outputs": [],
 				"stateMutability": "payable",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_campAddr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_campId",
+						"type": "uint256"
+					}
+				],
+				"name": "setAdminValues",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address payable",
+						"name": "_to",
+						"type": "address"
+					}
+				],
+				"name": "withdrawFunds",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -239,11 +305,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonation.sol": {
-			"keccak256": "0x4eb7cf00818222a52d1823d5a6c197941a520218f624dba30b8c1368ee81462d",
+			"keccak256": "0xcd8191b9956fd0db0a31162083ad53f9682021bd8b5873dca8af47c9ef86c686",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://191b5a90862e8ad416a1a8afa109541a8506aacb373647f80dc058e5d497ea06",
-				"dweb:/ipfs/QmWX8zdrf4rL1KxRkM8mmkDr7uft4hzmpo17EamAq95y5y"
+				"bzz-raw://b32ff330d6e8f88092a3f693e88e3f889ab59c11bf4f154ab31353d93339c5b1",
+				"dweb:/ipfs/QmPy4f5Xmeig13B2Ts88tWh3rrSafSDKkdLmLVdTUsD38v"
 			]
 		}
 	},
