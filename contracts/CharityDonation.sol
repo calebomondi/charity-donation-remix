@@ -99,6 +99,9 @@ contract CharityDonation {
             string(abi.encodePacked("'",campaigns[_campaignAddress][_campaignId-1].title, "' Campaign Was Completed!"))
         );
 
+        //check if campaign is still active
+        require(!campaigns[_campaignAddress][_campaignId-1].isCompleted , "The Campaign Was Completed!");
+
         //check if donation amount is greater than 0 and that _amount  == msg.value
         require(_amount > 0 , "Amount Cannot be Zero");
         require(msg.value == _amount, "The Amount doesn't Match!");
