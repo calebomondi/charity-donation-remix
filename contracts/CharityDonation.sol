@@ -5,8 +5,6 @@ pragma solidity ^0.8.26;
 contract CharityDonation {
     //Define the contract owner
     address private contractOwner;
-    uint256 private campaign_ID;
-    address private campaign_Address;
 
     //Define the campaign structure
     struct Campaign {
@@ -28,8 +26,9 @@ contract CharityDonation {
     //Events to emit
     event CampaignCreated(uint256 campaign_id, address campaignAddress,string title, uint256 targetAmount);
     event DonationReceived(address donor, uint256 amount);
-    event FundsWithdrawn(uint256 amount, address by, address to);
+    event FundsWithdrawn(uint256 amount, address by, address to, address from, uint256 campaignId);
     event CampaignCompleted(uint256 campaign_id);
+    event AddAdmin(address admin);
 
     //Initialize Contract Owner
     constructor() {
@@ -37,11 +36,13 @@ contract CharityDonation {
     }
 
     //Add campaign admins
-    function addCampaignAdmins(address _admin, uint256 _campaignId) public {
+    function addCampaignAdmins(address _admin) public {
         //check if campaign exists
-        require(campaigns[msg.sender][_campaignId-1].campaign_id == _campaignId,"The Campaigned Specified Does Not Exist!");
+        require(campaigns[msg.sender].length > 0,"The Campaigned Specified Does Not Exist!");
         //add admin to campaign
         admins[msg.sender][_admin] = true;    
+        //emit event
+        emit AddAdmin(_admin);
     }
 
     //RBAC modifiers
@@ -102,12 +103,10 @@ contract CharityDonation {
         require(_amount > 0 , "Amount Cannot be Zero");
         require(msg.value == _amount, "The Amount doesn't Match!");
 
-        //update the campaign raised  amount and close campaign if targeted amount is equal to or is exceeded
+        //update the campaign raised  amount
         campaigns[_campaignAddress][_campaignId-1].raisedAmount += _amount;
 
-        //transfer ether to the campaign address
-        _campaignAddress.transfer(_amount);
-
+        //check if the campaign target has been achieved and deactivate it
         if (campaigns[_campaignAddress][_campaignId-1].raisedAmount >= campaigns[_campaignAddress][_campaignId-1].targetAmount) {
             campaigns[_campaignAddress][_campaignId-1].isCompleted = true;    
         }
@@ -117,28 +116,33 @@ contract CharityDonation {
 
     }
 
-    //set  required admin parameter values
-    function setAdminValues(address _campAddr, uint256 _campId) public {
-        campaign_Address = _campAddr;
-        campaign_ID = _campId;
+    //get  contract balance
+    function getContractBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 
     //withdraw funds
-    function withdrawFunds(uint256 _amount, address payable _to) external payable onlyWithdraw(campaign_Address, campaign_ID) {
-        //cannot withdraw 0
+    function withdrawFunds(uint256 _campaignId, address _campaignAddress,uint256 _amount, address payable _to) external onlyWithdraw(_campaignAddress, _campaignId) {
+        //check if campaign is completed, amount to withdraw is greater than 0 and contaract balance is greater than amount being withdrawn
         require(
-            _amount > 0 && _amount < campaigns[campaign_Address][campaign_ID-1].raisedAmount, 
-            "Amount Cannot be Zero Or Excedd The Raised Amount!"
+            _amount > 0 && _amount <= campaigns[_campaignAddress][_campaignId-1].raisedAmount, 
+            "Amount Cannot be Zero Or Exceed The Raised Amount!"
         );
-        //check if campaign is completed
-        require(campaigns[campaign_Address][campaign_ID-1].isCompleted,"You Can't Withdraw Funds from an Active Campaign");
+        require(
+            campaigns[_campaignAddress][_campaignId-1].isCompleted,
+            "You Can't Withdraw Funds from an Active Campaign"
+        );
+        require(
+            address(this).balance >= _amount,
+            "Insufficient contract balance"
+        );
         //update campaigns balance
-        campaigns[campaign_Address][campaign_ID-1].raisedAmount -= _amount;
+        campaigns[_campaignAddress][_campaignId-1].raisedAmount -= _amount;
         //transfer funds to specified address
-        _to.transfer(_amount);
-
+        (bool success, ) = _to.call{value: _amount}("");
+        require(success, "Transfer failed");
         //emit event
-        emit FundsWithdrawn(_amount,msg.sender,_to);
+        emit FundsWithdrawn(_amount,msg.sender,_to,_campaignAddress,_campaignId);
     }
 
 }

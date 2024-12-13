@@ -15,6 +15,19 @@
 				"inputs": [
 					{
 						"indexed": false,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "AddAdmin",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
 						"internalType": "uint256",
 						"name": "campaign_id",
 						"type": "uint256"
@@ -93,6 +106,18 @@
 						"internalType": "address",
 						"name": "to",
 						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "campaignId",
+						"type": "uint256"
 					}
 				],
 				"name": "FundsWithdrawn",
@@ -104,11 +129,6 @@
 						"internalType": "address",
 						"name": "_admin",
 						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "_campaignId",
-						"type": "uint256"
 					}
 				],
 				"name": "addCampaignAdmins",
@@ -241,25 +261,30 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_campAddr",
-						"type": "address"
-					},
+				"inputs": [],
+				"name": "getContractBalance",
+				"outputs": [
 					{
 						"internalType": "uint256",
-						"name": "_campId",
+						"name": "",
 						"type": "uint256"
 					}
 				],
-				"name": "setAdminValues",
-				"outputs": [],
-				"stateMutability": "nonpayable",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
 				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					},
 					{
 						"internalType": "uint256",
 						"name": "_amount",
@@ -273,7 +298,7 @@
 				],
 				"name": "withdrawFunds",
 				"outputs": [],
-				"stateMutability": "payable",
+				"stateMutability": "nonpayable",
 				"type": "function"
 			}
 		],
@@ -305,11 +330,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonation.sol": {
-			"keccak256": "0xcd8191b9956fd0db0a31162083ad53f9682021bd8b5873dca8af47c9ef86c686",
+			"keccak256": "0x1f94e175bf42d2779427534666663644f2def060424495ead90bb0c6691ab7da",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://b32ff330d6e8f88092a3f693e88e3f889ab59c11bf4f154ab31353d93339c5b1",
-				"dweb:/ipfs/QmPy4f5Xmeig13B2Ts88tWh3rrSafSDKkdLmLVdTUsD38v"
+				"bzz-raw://eff92c6215259968fb1ee2c5ff8ec42f5e8aa3fdbd233267d5f4c63df4743cd3",
+				"dweb:/ipfs/QmQaVgbx2p8uzrJn6Fpz92uYfgPhwNWz6JtHAS82sEpiLF"
 			]
 		}
 	},
