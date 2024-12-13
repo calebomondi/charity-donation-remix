@@ -25,9 +25,9 @@ contract CharityDonation {
 
     //Events to emit
     event CampaignCreated(uint256 campaign_id, address campaignAddress,string title, uint256 targetAmount);
-    event DonationReceived(address donor, uint256 amount);
+    event DonationReceived(address donor, uint256 amount, address campaignAddress, uint256 campaign_id);
     event FundsWithdrawn(uint256 amount, address by, address to, address from, uint256 campaignId);
-    event CampaignCompleted(uint256 campaign_id);
+    event CampaignCompleted(address campaignAddress,uint256 campaign_id);
     event AddAdmin(address admin);
 
     //Initialize Contract Owner
@@ -112,7 +112,7 @@ contract CharityDonation {
         }
 
         //emit event
-        emit DonationReceived(msg.sender, _amount);
+        emit DonationReceived(msg.sender, _amount, _campaignAddress, _campaignId);
 
     }
 
