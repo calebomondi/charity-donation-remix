@@ -109,6 +109,7 @@ contract CharityDonation {
         //check if the campaign target has been achieved and deactivate it
         if (campaigns[_campaignAddress][_campaignId-1].raisedAmount >= campaigns[_campaignAddress][_campaignId-1].targetAmount) {
             campaigns[_campaignAddress][_campaignId-1].isCompleted = true;    
+            emit CampaignCompleted(_campaignAddress, _campaignId);
         }
 
         //emit event
