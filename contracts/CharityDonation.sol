@@ -17,11 +17,37 @@ contract CharityDonation {
         bool isCompleted;
     }
 
+    //Define the donation structure
+    struct Donation {
+        address campaignAddress;
+        uint256 campaignId;
+        string title;
+        uint256 amount;
+    }
+
+    //Define the  Withdrawal structure
+    struct Withdrawals {
+        uint256 campaignId;
+        string title;
+        uint256 amount;
+        address by;
+        address to;
+    }
+
     //Map multiple campaigns to a single address
     mapping  (address => Campaign[]) public campaigns;
 
     //Map campaign address to the campaign admins
     mapping  (address => mapping (address => bool)) public admins;
+
+    //Map campaign address to campaign admins
+    mapping  (address => address[]) public  campaignAdmins;
+
+    //Map multiple donations to a donor
+    mapping (address => Donation[]) public donors;
+
+    //Map withdrawals to a campaign address
+    mapping (address => Withdrawals[]) public withdrawals;
 
     //Events to emit
     event CampaignCreated(uint256 campaign_id, address campaignAddress,string title, uint256 targetAmount);
@@ -41,6 +67,7 @@ contract CharityDonation {
         require(campaigns[msg.sender].length > 0,"The Campaigned Specified Does Not Exist!");
         //add admin to campaign
         admins[msg.sender][_admin] = true;    
+        campaignAdmins[msg.sender].push(_admin);
         //emit event
         emit AddAdmin(_admin);
     }
@@ -99,9 +126,6 @@ contract CharityDonation {
             string(abi.encodePacked("'",campaigns[_campaignAddress][_campaignId-1].title, "' Campaign Was Completed!"))
         );
 
-        //check if campaign is still active
-        require(!campaigns[_campaignAddress][_campaignId-1].isCompleted , "The Campaign Was Completed!");
-
         //check if donation amount is greater than 0 and that _amount  == msg.value
         require(_amount > 0 , "Amount Cannot be Zero");
         require(msg.value == _amount, "The Amount doesn't Match!");
@@ -114,6 +138,15 @@ contract CharityDonation {
             campaigns[_campaignAddress][_campaignId-1].isCompleted = true;    
             emit CampaignCompleted(_campaignAddress, _campaignId);
         }
+
+        //add donation to donor records
+        Donation memory newDonation = Donation({
+            campaignAddress: _campaignAddress,
+            campaignId: _campaignId,
+            title:  campaigns[_campaignAddress][_campaignId-1].title,
+            amount: _amount
+        });
+        donors[msg.sender].push(newDonation);
 
         //emit event
         emit DonationReceived(msg.sender, _amount, _campaignAddress, _campaignId);
@@ -142,11 +175,43 @@ contract CharityDonation {
         );
         //update campaigns balance
         campaigns[_campaignAddress][_campaignId-1].raisedAmount -= _amount;
+
         //transfer funds to specified address
         (bool success, ) = _to.call{value: _amount}("");
         require(success, "Transfer failed");
+
+        //add withdrawal to withdrawal records
+        Withdrawals memory newWithdrawal = Withdrawals ({
+            campaignId: _campaignId,
+            title: campaigns[_campaignAddress][_campaignId-1].title,
+            amount: _amount,
+            by: msg.sender,
+            to: _to
+        });
+        withdrawals[_campaignAddress].push(newWithdrawal);
+
         //emit event
         emit FundsWithdrawn(_amount,msg.sender,_to,_campaignAddress,_campaignId);
+    }
+
+    //View campaigns under this address
+    function viewCampaigns() public view returns (Campaign[] memory) {
+        return campaigns[msg.sender];
+    }
+
+    //View campaign admins
+    function viewCampaignAdmins(address _campaignAddress) public view returns (address[] memory ){
+        return campaignAdmins[_campaignAddress];
+    }
+
+    //Track your donations
+    function viewDonations() public view returns (Donation[] memory) {
+        return donors[msg.sender];
+    }
+
+    //Track withdrawals
+    function viewWithdrawals(address _campaignAddress) public view returns (Withdrawals[] memory) {
+        return withdrawals[_campaignAddress];
     }
 
 }
