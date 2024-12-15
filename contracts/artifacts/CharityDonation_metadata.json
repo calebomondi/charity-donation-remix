@@ -39,6 +39,25 @@
 						"type": "uint256"
 					}
 				],
+				"name": "CampaignCancelled",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "campaignAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "campaign_id",
+						"type": "uint256"
+					}
+				],
 				"name": "CampaignCompleted",
 				"type": "event"
 			},
@@ -67,6 +86,12 @@
 						"indexed": false,
 						"internalType": "uint256",
 						"name": "targetAmount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "deadline",
 						"type": "uint256"
 					}
 				],
@@ -205,6 +230,82 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					}
+				],
+				"name": "campaignDetails",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "campaign_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "title",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "address",
+								"name": "campaignAddress",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "targetAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "raisedAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "deadline",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "isCompleted",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct CharityDonation.Campaign",
+						"name": "thisCampaign",
+						"type": "tuple"
+					},
+					{
+						"internalType": "uint256",
+						"name": "donorsnumber",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address[]",
+						"name": "campaigndonors",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "address",
 						"name": "",
 						"type": "address"
@@ -248,12 +349,35 @@
 						"type": "uint256"
 					},
 					{
+						"internalType": "uint256",
+						"name": "deadline",
+						"type": "uint256"
+					},
+					{
 						"internalType": "bool",
 						"name": "isCompleted",
 						"type": "bool"
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					}
+				],
+				"name": "cancelCampaign",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -271,6 +395,11 @@
 					{
 						"internalType": "uint256",
 						"name": "_target",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_durationdays",
 						"type": "uint256"
 					}
 				],
@@ -342,6 +471,98 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "donorsForCampaign",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					}
+				],
+				"name": "getCampaignBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					}
+				],
+				"name": "getCampaignProgress",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "goalamount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "raisedAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "donorsNumber",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address[]",
+						"name": "campaigndonors",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getContractBalance",
 				"outputs": [
@@ -352,6 +573,24 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					}
+				],
+				"name": "refundDonors",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -407,6 +646,11 @@
 							{
 								"internalType": "uint256",
 								"name": "raisedAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "deadline",
 								"type": "uint256"
 							},
 							{
@@ -605,11 +849,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonation.sol": {
-			"keccak256": "0xda9a18b7887168677f4e10e25323b95a3e13012dbb4efeb7923e9450475412a5",
+			"keccak256": "0x69c9919ee4816ea3c2ef8c1f515fc5584267ab7eef9b7a979ae7f970f9ac405c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://e80a3da3ae54e485c7bf1f2e8bf839d3063764b35f1d23d42e00d3fa331310ff",
-				"dweb:/ipfs/QmZ9YwSNqAF4fSCEwYzxR9idCc3sgJJ7GPqr6wR7p8h3Hm"
+				"bzz-raw://dc347f0d72162ff81dc14c78fb50c00b7f475ee4f09678003a4e4d8a7817dc69",
+				"dweb:/ipfs/QmdzkhKs16tijaszACoH9cP4rLK95FqVWjaRxqqpyhpSqo"
 			]
 		}
 	},

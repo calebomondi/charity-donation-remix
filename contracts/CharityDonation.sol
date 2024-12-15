@@ -14,6 +14,7 @@ contract CharityDonation {
         address campaignAddress;
         uint256 targetAmount;
         uint256 raisedAmount;
+        uint256 deadline;
         bool isCompleted;
     }
 
@@ -49,11 +50,15 @@ contract CharityDonation {
     //Map withdrawals to a campaign address
     mapping (address => Withdrawals[]) public withdrawals;
 
+    //Map donors to a particular campign from a particular campaigna address
+    mapping (address => mapping (uint256 => address[])) public donorsForCampaign;
+
     //Events to emit
-    event CampaignCreated(uint256 campaign_id, address campaignAddress,string title, uint256 targetAmount);
+    event CampaignCreated(uint256 campaign_id, address campaignAddress,string title, uint256 targetAmount, uint256 deadline);
     event DonationReceived(address donor, uint256 amount, address campaignAddress, uint256 campaign_id);
     event FundsWithdrawn(uint256 amount, address by, address to, address from, uint256 campaignId);
     event CampaignCompleted(address campaignAddress,uint256 campaign_id);
+    event CampaignCancelled(address campaignAddress,uint256 campaign_id);
     event AddAdmin(address admin);
 
     //Initialize Contract Owner
@@ -73,7 +78,7 @@ contract CharityDonation {
     }
 
     //RBAC modifiers
-    modifier onlyWithdraw(address _campaignAddress,uint256 _campaignId) {
+    modifier onlyAdmins(address _campaignAddress,uint256 _campaignId) {
         //check if campaign exits
         require(campaigns[_campaignAddress].length > 0, "There Is No Campaign By That address!");
         //check if specified campaign exists
@@ -83,8 +88,13 @@ contract CharityDonation {
         _;
     }
 
+    modifier  onlyContractOwner() {
+        require(msg.sender == contractOwner,"Only Contract Owner Can Perform This Action!");
+        _;
+    }
+
     //Create Campaign Method
-    function createCampaign(string memory _title, string memory _description,uint256 _target) public  {
+    function createCampaign(string memory _title, string memory _description,uint256 _target, uint256 _durationdays) public  {
         //check if campaign already exists
         unchecked {
             for(uint256 i; i < campaigns[msg.sender].length; i++) {
@@ -105,18 +115,19 @@ contract CharityDonation {
                 campaignAddress: msg.sender,
                 targetAmount: _target, 
                 raisedAmount  :  0, 
+                deadline: block.timestamp + (_durationdays * 1 days),
                 isCompleted: false
             }
         );
         campaigns[msg.sender].push(newCampaign);
 
         //emit event
-        emit CampaignCreated(campaigns[msg.sender].length, msg.sender, _title, _target);
+        emit CampaignCreated(campaigns[msg.sender].length, msg.sender, _title, _target, block.timestamp + (_durationdays * 1 days));
     }
 
     //Donate to Campaign Method
     function donateToCampaign(address payable  _campaignAddress, uint256 _campaignId, uint256 _amount) public payable  {
-        //check if donation campaign exists and if its active or not
+        //check if donation campaign exists and if its active or not and deadline has not been reached
         require(
             campaigns[_campaignAddress][_campaignId-1].campaign_id == _campaignId, 
             string(abi.encodePacked("The Campaign ", _campaignId , " Does NOT Exist!"))
@@ -124,6 +135,10 @@ contract CharityDonation {
         require(
             campaigns[_campaignAddress][_campaignId-1].isCompleted == false, 
             string(abi.encodePacked("'",campaigns[_campaignAddress][_campaignId-1].title, "' Campaign Was Completed!"))
+        );
+        require(
+            block.timestamp < campaigns[_campaignAddress][_campaignId-1].deadline,
+            "The Campaign's Deadline Has Passed!"
         );
 
         //check if donation amount is greater than 0 and that _amount  == msg.value
@@ -148,18 +163,55 @@ contract CharityDonation {
         });
         donors[msg.sender].push(newDonation);
 
+        donorsForCampaign[_campaignAddress][_campaignId].push(msg.sender);
+
         //emit event
         emit DonationReceived(msg.sender, _amount, _campaignAddress, _campaignId);
 
     }
 
-    //get  contract balance
-    function getContractBalance() public view returns (uint256) {
+    //get contract balance by contract owner
+    function getContractBalance() public view onlyContractOwner returns (uint256) {
         return address(this).balance;
     }
 
+    //get Campaign balance
+    function getCampaignBalance(uint256 _campaignId, address _campaignAddress)  public view returns (uint256){
+        require(campaigns[_campaignAddress][_campaignId-1].isCompleted,"The Campaign Is Not Yet Completed!");
+        return campaigns[_campaignAddress][_campaignId-1].raisedAmount;
+    }
+
+    //get Campaign progress
+    function getCampaignProgress(uint256 _campaignId, address _campaignAddress) public view returns (uint256 goalamount,uint256 raisedAmount, uint256 donorsNumber,address[] memory campaigndonors) {
+        //check if campaign is active and has not reached the deadline
+        require(!campaigns[_campaignAddress][_campaignId-1].isCompleted,"This Campaign Has Been Completed!");
+        require(
+            block.timestamp < campaigns[_campaignAddress][_campaignId-1].deadline,
+            "The Campaign's Deadline Has Passed!"
+        );
+        //get values
+        Campaign storage thisCampign = campaigns[_campaignAddress][_campaignId-1];
+
+        return (
+            thisCampign.targetAmount, 
+            thisCampign.raisedAmount, 
+            donorsForCampaign[_campaignAddress][_campaignId].length,  
+            donorsForCampaign[_campaignAddress][_campaignId]
+        );
+    }
+
+    //get particluar campaign details
+    function campaignDetails(uint256 _campaignId, address _campaignAddress) public view returns(Campaign memory thisCampaign, uint256 donorsnumber, address[] memory campaigndonors) {
+        Campaign memory thisCampign = campaigns[_campaignAddress][_campaignId-1];
+        return  (
+            thisCampign, 
+            donorsForCampaign[_campaignAddress][_campaignId].length,  
+            donorsForCampaign[_campaignAddress][_campaignId]
+        );
+    }
+
     //withdraw funds
-    function withdrawFunds(uint256 _campaignId, address _campaignAddress,uint256 _amount, address payable _to) external onlyWithdraw(_campaignAddress, _campaignId) {
+    function withdrawFunds(uint256 _campaignId, address _campaignAddress,uint256 _amount, address payable _to) external onlyAdmins(_campaignAddress, _campaignId) {
         //check if campaign is completed, amount to withdraw is greater than 0 and contaract balance is greater than amount being withdrawn
         require(
             _amount > 0 && _amount <= campaigns[_campaignAddress][_campaignId-1].raisedAmount, 
@@ -192,6 +244,31 @@ contract CharityDonation {
 
         //emit event
         emit FundsWithdrawn(_amount,msg.sender,_to,_campaignAddress,_campaignId);
+    }
+
+    //cancel  campaign before it starts
+    function cancelCampaign(uint256 _campaignId, address _campaignAddress) external  onlyAdmins(_campaignAddress, _campaignId) {
+        //check if campaign has not yet raised any coins and if its still active
+        Campaign memory thisCampign = campaigns[_campaignAddress][_campaignId-1];
+        require(
+            !thisCampign.isCompleted,
+            "This Campaign Has Been  Completed Or Is Already Canceled!"
+        );
+        require(
+            thisCampign.raisedAmount == 0, 
+            "This Campaign Has Already Raised Funds! Refund First Then Cancel!"
+        );
+
+        //deactivate the campaign 
+        thisCampign.isCompleted = true;  
+
+         //emit event
+        emit CampaignCancelled(_campaignAddress, _campaignId);
+    }
+
+    //refund donors if campaign fails
+    function refundDonors(uint256 _campaignId, address _campaignAddress) external onlyAdmins(_campaignAddress, _campaignId){
+        
     }
 
     //View campaigns under this address
