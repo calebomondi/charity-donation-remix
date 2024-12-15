@@ -849,11 +849,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonation.sol": {
-			"keccak256": "0x69c9919ee4816ea3c2ef8c1f515fc5584267ab7eef9b7a979ae7f970f9ac405c",
+			"keccak256": "0xcd67df4154b4ea11d1e84d4d862342b86512e5f93123dc5c6d64a9e18fb70712",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://dc347f0d72162ff81dc14c78fb50c00b7f475ee4f09678003a4e4d8a7817dc69",
-				"dweb:/ipfs/QmdzkhKs16tijaszACoH9cP4rLK95FqVWjaRxqqpyhpSqo"
+				"bzz-raw://838f370f7965e93dc3454bb3146fc8e78278b56f3fb5f87bdbacda9d7083f914",
+				"dweb:/ipfs/QmZ3aQPnUScRnd5N2H4csVogpQ45tyf4FmUinj5R1STGL3"
 			]
 		}
 	},

@@ -68,11 +68,16 @@ contract CharityDonation {
 
     //Add campaign admins
     function addCampaignAdmins(address _admin) public {
-        //check if campaign exists
-        require(campaigns[msg.sender].length > 0,"The Campaigned Specified Does Not Exist!");
+        //campaign address cannot be admin
+        require(msg.sender != _admin,"The Campaign Address Cannot Be An Admin!");
+        
+        //check if admin is already an admin for campaign address
+        require(!admins[msg.sender][_admin], "You Are Already An Admin!");
+
         //add admin to campaign
         admins[msg.sender][_admin] = true;    
         campaignAdmins[msg.sender].push(_admin);
+
         //emit event
         emit AddAdmin(_admin);
     }
@@ -133,17 +138,17 @@ contract CharityDonation {
             string(abi.encodePacked("The Campaign ", _campaignId , " Does NOT Exist!"))
         );
         require(
-            campaigns[_campaignAddress][_campaignId-1].isCompleted == false, 
-            string(abi.encodePacked("'",campaigns[_campaignAddress][_campaignId-1].title, "' Campaign Was Completed!"))
+            block.timestamp < campaigns[_campaignAddress][_campaignId-1].deadline,
+            "This Campaign's Deadline Has Passed!"
         );
         require(
-            block.timestamp < campaigns[_campaignAddress][_campaignId-1].deadline,
-            "The Campaign's Deadline Has Passed!"
+            !campaigns[_campaignAddress][_campaignId-1].isCompleted, 
+            string(abi.encodePacked("'",campaigns[_campaignAddress][_campaignId-1].title, "' Campaign Was Cancalled!"))
         );
 
         //check if donation amount is greater than 0 and that _amount  == msg.value
-        require(_amount > 0 , "Amount Cannot be Zero");
-        require(msg.value == _amount, "The Amount doesn't Match!");
+        require(_amount > 0 , "Donation Amount Cannot be Zero");
+        require(msg.value == _amount, "The Amount And Value Don't Match!");
 
         //update the campaign raised  amount
         campaigns[_campaignAddress][_campaignId-1].raisedAmount += _amount;
@@ -167,7 +172,6 @@ contract CharityDonation {
 
         //emit event
         emit DonationReceived(msg.sender, _amount, _campaignAddress, _campaignId);
-
     }
 
     //get contract balance by contract owner
@@ -177,24 +181,29 @@ contract CharityDonation {
 
     //get Campaign balance
     function getCampaignBalance(uint256 _campaignId, address _campaignAddress)  public view returns (uint256){
-        require(campaigns[_campaignAddress][_campaignId-1].isCompleted,"The Campaign Is Not Yet Completed!");
+        //check if campaign is still active
+        require(campaigns[_campaignAddress][_campaignId-1].isCompleted,"This Campaign Is Still In Progress!");
+
         return campaigns[_campaignAddress][_campaignId-1].raisedAmount;
     }
 
     //get Campaign progress
     function getCampaignProgress(uint256 _campaignId, address _campaignAddress) public view returns (uint256 goalamount,uint256 raisedAmount, uint256 donorsNumber,address[] memory campaigndonors) {
         //check if campaign is active and has not reached the deadline
-        require(!campaigns[_campaignAddress][_campaignId-1].isCompleted,"This Campaign Has Been Completed!");
         require(
             block.timestamp < campaigns[_campaignAddress][_campaignId-1].deadline,
-            "The Campaign's Deadline Has Passed!"
+            "The Campaign Was Completed!"
+        );
+        require(
+            !campaigns[_campaignAddress][_campaignId-1].isCompleted,
+            "This Campaign Has Been Cancelled!"
         );
         //get values
-        Campaign storage thisCampign = campaigns[_campaignAddress][_campaignId-1];
+        Campaign storage thisCampaign = campaigns[_campaignAddress][_campaignId-1];
 
         return (
-            thisCampign.targetAmount, 
-            thisCampign.raisedAmount, 
+            thisCampaign.targetAmount, 
+            thisCampaign.raisedAmount, 
             donorsForCampaign[_campaignAddress][_campaignId].length,  
             donorsForCampaign[_campaignAddress][_campaignId]
         );
@@ -214,16 +223,16 @@ contract CharityDonation {
     function withdrawFunds(uint256 _campaignId, address _campaignAddress,uint256 _amount, address payable _to) external onlyAdmins(_campaignAddress, _campaignId) {
         //check if campaign is completed, amount to withdraw is greater than 0 and contaract balance is greater than amount being withdrawn
         require(
-            _amount > 0 && _amount <= campaigns[_campaignAddress][_campaignId-1].raisedAmount, 
-            "Amount Cannot be Zero Or Exceed The Raised Amount!"
-        );
-        require(
             campaigns[_campaignAddress][_campaignId-1].isCompleted,
             "You Can't Withdraw Funds from an Active Campaign"
         );
         require(
             address(this).balance >= _amount,
             "Insufficient contract balance"
+        );
+        require(
+            _amount > 0 && _amount <= campaigns[_campaignAddress][_campaignId-1].raisedAmount, 
+            "Amount Cannot be Zero Or Exceed The Raised Amount!"
         );
         //update campaigns balance
         campaigns[_campaignAddress][_campaignId-1].raisedAmount -= _amount;
@@ -249,18 +258,18 @@ contract CharityDonation {
     //cancel  campaign before it starts
     function cancelCampaign(uint256 _campaignId, address _campaignAddress) external  onlyAdmins(_campaignAddress, _campaignId) {
         //check if campaign has not yet raised any coins and if its still active
-        Campaign memory thisCampign = campaigns[_campaignAddress][_campaignId-1];
+        Campaign memory thisCampaign = campaigns[_campaignAddress][_campaignId-1];
         require(
-            !thisCampign.isCompleted,
-            "This Campaign Has Been  Completed Or Is Already Canceled!"
+            thisCampaign.raisedAmount == 0, 
+            "This Campaign Has Already Raised Funds! Refund First Then Cancel!"
         );
         require(
-            thisCampign.raisedAmount == 0, 
-            "This Campaign Has Already Raised Funds! Refund First Then Cancel!"
+            !thisCampaign.isCompleted, 
+            "This Campaign Has Already Been Cancelled!"
         );
 
         //deactivate the campaign 
-        thisCampign.isCompleted = true;  
+        campaigns[_campaignAddress][_campaignId-1].isCompleted = true;  
 
          //emit event
         emit CampaignCancelled(_campaignAddress, _campaignId);
