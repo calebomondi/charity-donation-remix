@@ -16,6 +16,7 @@ contract CharityDonation {
         uint256 raisedAmount;
         uint256 deadline;
         bool isCompleted;
+        bool isCancelled;
     }
 
     //Define the donation structure
@@ -67,12 +68,12 @@ contract CharityDonation {
     }
 
     //Add campaign admins
-    function addCampaignAdmins(address _admin) public {
+    function addCampaignAdmin(address _admin) public {
         //campaign address cannot be admin
         require(msg.sender != _admin,"The Campaign Address Cannot Be An Admin!");
         
         //check if admin is already an admin for campaign address
-        require(!admins[msg.sender][_admin], "You Are Already An Admin!");
+        require(!admins[msg.sender][_admin], "This Address Is Already An Admin!");
 
         //add admin to campaign
         admins[msg.sender][_admin] = true;    
@@ -80,6 +81,26 @@ contract CharityDonation {
 
         //emit event
         emit AddAdmin(_admin);
+    }
+
+    //Remove Campaign Admin
+    function removeCampaignAdmin(address _admin ) external onlyContractOwner{
+        //check if address is an admin
+        require(admins[msg.sender][_admin],"This Address Is Not An Admin!");
+
+        //remove admin
+        admins[msg.sender][_admin] = false;    
+
+        address[] storage campaignadmins = campaignAdmins[msg.sender];
+        for (uint256 i; i < campaignadmins.length; i++) {
+            if (campaignadmins[i] == _admin) {
+                // Replace the element to remove with the last element
+                campaignadmins[i] = campaignadmins[campaignadmins.length - 1];
+                // Remove the last element
+                campaignadmins.pop();
+                break;
+            }
+        }
     }
 
     //RBAC modifiers
@@ -121,7 +142,8 @@ contract CharityDonation {
                 targetAmount: _target, 
                 raisedAmount  :  0, 
                 deadline: block.timestamp + (_durationdays * 1 days),
-                isCompleted: false
+                isCompleted: false,
+                isCancelled: false
             }
         );
         campaigns[msg.sender].push(newCampaign);
@@ -142,8 +164,12 @@ contract CharityDonation {
             "This Campaign's Deadline Has Passed!"
         );
         require(
-            !campaigns[_campaignAddress][_campaignId-1].isCompleted, 
+            !campaigns[_campaignAddress][_campaignId-1].isCancelled, 
             string(abi.encodePacked("'",campaigns[_campaignAddress][_campaignId-1].title, "' Campaign Was Cancalled!"))
+        );
+        require(
+            !campaigns[_campaignAddress][_campaignId-1].isCompleted, 
+            string(abi.encodePacked("'",campaigns[_campaignAddress][_campaignId-1].title, "' Campaign Was Completed!"))
         );
 
         //check if donation amount is greater than 0 and that _amount  == msg.value
@@ -182,6 +208,7 @@ contract CharityDonation {
     //get Campaign balance
     function getCampaignBalance(uint256 _campaignId, address _campaignAddress)  public view returns (uint256){
         //check if campaign is still active
+        require(!campaigns[_campaignAddress][_campaignId-1].isCancelled,"This Campaign Was Cancelled!");
         require(campaigns[_campaignAddress][_campaignId-1].isCompleted,"This Campaign Is Still In Progress!");
 
         return campaigns[_campaignAddress][_campaignId-1].raisedAmount;
@@ -193,6 +220,10 @@ contract CharityDonation {
         require(
             block.timestamp < campaigns[_campaignAddress][_campaignId-1].deadline,
             "The Campaign Was Completed!"
+        );
+        require(
+            !campaigns[_campaignAddress][_campaignId-1].isCancelled,
+            "This Campaign Has Been Cancelled!"
         );
         require(
             !campaigns[_campaignAddress][_campaignId-1].isCompleted,
@@ -235,7 +266,9 @@ contract CharityDonation {
             "Amount Cannot be Zero Or Exceed The Raised Amount!"
         );
         //update campaigns balance
-        campaigns[_campaignAddress][_campaignId-1].raisedAmount -= _amount;
+        uint256 currentbalance = campaigns[_campaignAddress][_campaignId-1].raisedAmount;
+        uint256 updatedbalance = currentbalance - _amount;
+        campaigns[_campaignAddress][_campaignId-1].raisedAmount = updatedbalance;
 
         //transfer funds to specified address
         (bool success, ) = _to.call{value: _amount}("");
@@ -269,15 +302,10 @@ contract CharityDonation {
         );
 
         //deactivate the campaign 
-        campaigns[_campaignAddress][_campaignId-1].isCompleted = true;  
+        campaigns[_campaignAddress][_campaignId-1].isCancelled = true;  
 
          //emit event
         emit CampaignCancelled(_campaignAddress, _campaignId);
-    }
-
-    //refund donors if campaign fails
-    function refundDonors(uint256 _campaignId, address _campaignAddress) external onlyAdmins(_campaignAddress, _campaignId){
-        
     }
 
     //View campaigns under this address

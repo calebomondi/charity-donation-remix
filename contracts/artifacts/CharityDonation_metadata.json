@@ -174,7 +174,7 @@
 						"type": "address"
 					}
 				],
-				"name": "addCampaignAdmins",
+				"name": "addCampaignAdmin",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -283,6 +283,11 @@
 								"internalType": "bool",
 								"name": "isCompleted",
 								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "isCancelled",
+								"type": "bool"
 							}
 						],
 						"internalType": "struct CharityDonation.Campaign",
@@ -356,6 +361,11 @@
 					{
 						"internalType": "bool",
 						"name": "isCompleted",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "isCancelled",
 						"type": "bool"
 					}
 				],
@@ -578,17 +588,12 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "_campaignId",
-						"type": "uint256"
-					},
-					{
 						"internalType": "address",
-						"name": "_campaignAddress",
+						"name": "_admin",
 						"type": "address"
 					}
 				],
-				"name": "refundDonors",
+				"name": "removeCampaignAdmin",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -656,6 +661,11 @@
 							{
 								"internalType": "bool",
 								"name": "isCompleted",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "isCancelled",
 								"type": "bool"
 							}
 						],
@@ -849,11 +859,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonation.sol": {
-			"keccak256": "0xcd67df4154b4ea11d1e84d4d862342b86512e5f93123dc5c6d64a9e18fb70712",
+			"keccak256": "0x1bc474f2ee792ed58a873d9b500ecb6c0f6d4c7ca5396c3c479c006042499be1",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://838f370f7965e93dc3454bb3146fc8e78278b56f3fb5f87bdbacda9d7083f914",
-				"dweb:/ipfs/QmZ3aQPnUScRnd5N2H4csVogpQ45tyf4FmUinj5R1STGL3"
+				"bzz-raw://8e0040861445c17bcf37f419fd388a066f1236dc67219e15d6b8757013a36331",
+				"dweb:/ipfs/QmRG6XSB9ndnnDrAX4kHnz2yxMFkR9M3QbnLmt5KuM2c8J"
 			]
 		}
 	},
