@@ -862,11 +862,11 @@
 			]
 		},
 		"contracts/CharityDonationCore.sol": {
-			"keccak256": "0x0b32df616d6d331567b8f2c5d77eecdfd228a641ee46599402ffa0290fd56237",
+			"keccak256": "0x8c7b52b4dec7206c235935d8f8b3fe4b1c8a3dc010ca15ee01c2691c83bc54d0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ad1f007dfe5771da98b4de7f1a19d777851fafb71c8c284439217e40dbe3da6c",
-				"dweb:/ipfs/QmWd7so69s1bfw2KqPJZEkV8FAXAdhwK4U3KsP6o9Aq472"
+				"bzz-raw://32ec92b1177538af0e57a1498f72ddb145c85d382db3a35cf0f279458327af8f",
+				"dweb:/ipfs/QmezQw7wQaSuvdSnZV1Vhxu6G9Da7Nf2uRstCsnVNUEi7o"
 			]
 		},
 		"contracts/CharityDonationEvents.sol": {

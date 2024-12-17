@@ -33,6 +33,12 @@ contract CharityDonationStorage {
         address to;
     }
 
+    //Define Campign Donors Structure
+    struct CampaignDonors {
+        address by;
+        uint256 amount;
+    }
+
     //Map multiple campaigns to a single address
     mapping  (address => Campaign[]) public campaigns;
 
@@ -49,5 +55,5 @@ contract CharityDonationStorage {
     mapping (address => Withdrawals[]) public withdrawals;
 
     //Map donors to a particular campign from a particular campaigna address
-    mapping (address => mapping (uint256 => address[])) public donorsForCampaign; 
+    mapping (address => mapping (uint256 => CampaignDonors[])) public donorsForCampaign; 
 }

@@ -160,6 +160,19 @@
 				],
 				"name": "FundsWithdrawn",
 				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "RemoveAdmin",
+				"type": "event"
 			}
 		],
 		"devdoc": {
@@ -190,11 +203,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationEvents.sol": {
-			"keccak256": "0x8b7a05aa4b3c5d8cbe57bdd5056b8fb0b75871ec5b251393148326b7cdd93e9e",
+			"keccak256": "0x2dea8f14ee9c95dcb2f26e25b4e3d816f995a33e5e9b07b34f922ccf18e23eea",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://18fbceae1d1d3e1f7bc03096fa12e6454219728ae5869cee87fe7852a4810b62",
-				"dweb:/ipfs/QmZvJL4FxYWXR2cGKDCGctphxXh4PifJaE42a9Ez5RZ9mW"
+				"bzz-raw://788afa29499c2bfef377525fae712354e2698ab2e10772431ad079d529f46e55",
+				"dweb:/ipfs/QmdPpWhTh5wPpbkpKpw8vuuhpj9SjPZq4aLvpd4JS68mRq"
 			]
 		}
 	},

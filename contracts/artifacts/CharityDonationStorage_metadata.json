@@ -178,8 +178,13 @@
 				"outputs": [
 					{
 						"internalType": "address",
-						"name": "",
+						"name": "by",
 						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -258,11 +263,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationStorage.sol": {
-			"keccak256": "0xc3fe0ee5d9b51afd7d8c387d0d5d98d8919d6623bace06ef7ae9c6c007364cd0",
+			"keccak256": "0x42275462a72e4914c1ee8b6cb2200662ea369dd9c7608bbc3b311b756fc24bad",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8a682f921d8039641851945d438239338caba8cd9d9bac21820369e9189a4009",
-				"dweb:/ipfs/QmasTs1isaBayiuzsC6bJ1PZRoDVdaFdVCKX79krr8XNGW"
+				"bzz-raw://1ad69d3adf02f055f7e93735030816cf444f39a264730dbc4bdbb079f9ff9142",
+				"dweb:/ipfs/QmUUfyT4vyM4N42CbnuhDTQZTRWKT22sTfXMzy6LdQL1v5"
 			]
 		}
 	},

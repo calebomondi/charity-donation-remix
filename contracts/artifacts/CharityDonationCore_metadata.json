@@ -162,6 +162,32 @@
 				"type": "event"
 			},
 			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "RemoveAdmin",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					}
+				],
+				"name": "RefundDonors",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -416,8 +442,13 @@
 				"outputs": [
 					{
 						"internalType": "address",
-						"name": "",
+						"name": "by",
 						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -537,35 +568,35 @@
 	},
 	"sources": {
 		"contracts/CharityDonationAdmin.sol": {
-			"keccak256": "0xbd0c3b5b3a582ebff1d14662c4574027add0f8231ab8778aaf783b61b2a1fd3d",
+			"keccak256": "0x25f9a5f2011dcfd0b54f5ed3e8391b3a65fb3b5e26bb309c61f7cbe4524f4fa0",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://cc15735c80cf0b824335ababbdc577b31461efb6103016fa6ef4f1d847cbf596",
-				"dweb:/ipfs/QmVeBNWtsqyUxb9fQxQsJNG11ZikZDDupbVQsG4BYQnJ5Z"
+				"bzz-raw://3cc1ed1814e30b2b8e65e8b2e7dc31e3e3c81405602a75b95e610244cb0cafa1",
+				"dweb:/ipfs/QmVhSt6CzecoVfBhdiQNhYduoDyVVsJkmaXFmynAKPVu4t"
 			]
 		},
 		"contracts/CharityDonationCore.sol": {
-			"keccak256": "0x8c7b52b4dec7206c235935d8f8b3fe4b1c8a3dc010ca15ee01c2691c83bc54d0",
+			"keccak256": "0x8c404f373307daf2036379f7844e5565fa586d5dc78eac5c5e335a30f1f7affc",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://32ec92b1177538af0e57a1498f72ddb145c85d382db3a35cf0f279458327af8f",
-				"dweb:/ipfs/QmezQw7wQaSuvdSnZV1Vhxu6G9Da7Nf2uRstCsnVNUEi7o"
+				"bzz-raw://caa564de7873338088442c0bd2c5f323e457bcdba567f06deed2cd3716e8510b",
+				"dweb:/ipfs/QmPA3vDF8yPTViBGNXMcNYrG94zvFZj2yZHWUQgdCM3NCe"
 			]
 		},
 		"contracts/CharityDonationEvents.sol": {
-			"keccak256": "0x8b7a05aa4b3c5d8cbe57bdd5056b8fb0b75871ec5b251393148326b7cdd93e9e",
+			"keccak256": "0x2dea8f14ee9c95dcb2f26e25b4e3d816f995a33e5e9b07b34f922ccf18e23eea",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://18fbceae1d1d3e1f7bc03096fa12e6454219728ae5869cee87fe7852a4810b62",
-				"dweb:/ipfs/QmZvJL4FxYWXR2cGKDCGctphxXh4PifJaE42a9Ez5RZ9mW"
+				"bzz-raw://788afa29499c2bfef377525fae712354e2698ab2e10772431ad079d529f46e55",
+				"dweb:/ipfs/QmdPpWhTh5wPpbkpKpw8vuuhpj9SjPZq4aLvpd4JS68mRq"
 			]
 		},
 		"contracts/CharityDonationStorage.sol": {
-			"keccak256": "0xc3fe0ee5d9b51afd7d8c387d0d5d98d8919d6623bace06ef7ae9c6c007364cd0",
+			"keccak256": "0x42275462a72e4914c1ee8b6cb2200662ea369dd9c7608bbc3b311b756fc24bad",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8a682f921d8039641851945d438239338caba8cd9d9bac21820369e9189a4009",
-				"dweb:/ipfs/QmasTs1isaBayiuzsC6bJ1PZRoDVdaFdVCKX79krr8XNGW"
+				"bzz-raw://1ad69d3adf02f055f7e93735030816cf444f39a264730dbc4bdbb079f9ff9142",
+				"dweb:/ipfs/QmUUfyT4vyM4N42CbnuhDTQZTRWKT22sTfXMzy6LdQL1v5"
 			]
 		}
 	},

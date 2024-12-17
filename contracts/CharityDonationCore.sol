@@ -80,7 +80,12 @@ contract CharityDonationCore is CharityDonationAdmin {
         });
         donors[msg.sender].push(newDonation);
 
-        donorsForCampaign[_campaignAddress][_campaignId].push(msg.sender);
+        CampaignDonors memory thisDonor = CampaignDonors({
+            by:msg.sender,
+            amount: _amount
+        });
+
+        donorsForCampaign[_campaignAddress][_campaignId].push(thisDonor);
 
         //emit event
         emit DonationReceived(msg.sender, _amount, _campaignAddress, _campaignId);

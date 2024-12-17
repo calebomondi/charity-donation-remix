@@ -10,4 +10,5 @@ contract CharityDonationEvents {
     event CampaignCompleted(address campaignAddress,uint256 campaign_id);
     event CampaignCancelled(address campaignAddress,uint256 campaign_id);
     event AddAdmin(address admin);
+    event RemoveAdmin(address admin);
 }

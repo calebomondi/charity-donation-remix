@@ -6,6 +6,11 @@
 	"output": {
 		"abi": [
 			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
 				"anonymous": false,
 				"inputs": [
 					{
@@ -458,11 +463,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationAdmin.sol": {
-			"keccak256": "0x9805eae198193d2b6fb49ed0f7f0fcff0ef40e8265b1363d138c2e5efa73b93c",
+			"keccak256": "0xfbe193bc10854ac6ff1cac57d08dd2e23e397353a57606e8ddb9ec44ab4ff590",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1efda045f292d67bbab7b4ec2da76e3e84da9df0bd9f7ff6546eb053c7d87519",
-				"dweb:/ipfs/QmRL29uQFLZr48Bgs8ArEP7Ujr3gVicoimJZXG7qFTwg34"
+				"bzz-raw://897b94323058923e5967ddb5e3f4248c5a46e7cf6c81260fdacb2997c4c22c79",
+				"dweb:/ipfs/QmQnWBAQg3ZByn8iv4qdDoEsxQxYqeT6eSbLrVYgaZbk49"
 			]
 		},
 		"contracts/CharityDonationEvents.sol": {
@@ -471,14 +476,6 @@
 			"urls": [
 				"bzz-raw://18fbceae1d1d3e1f7bc03096fa12e6454219728ae5869cee87fe7852a4810b62",
 				"dweb:/ipfs/QmZvJL4FxYWXR2cGKDCGctphxXh4PifJaE42a9Ez5RZ9mW"
-			]
-		},
-		"contracts/CharityDonationSecurity.sol": {
-			"keccak256": "0xf9de2bc0153f891a22c6ef7bd85ddbfdccd8d73f1c8e1ad6588a45a85a51a6c1",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://262d4706d83f0c3e99736f372d929a16128b2e130f633373e9f60f3665ba8f4e",
-				"dweb:/ipfs/QmUWcVK2EmKqHCmqqxtuyEici8iRcprty9KLt5eYm6u6Qc"
 			]
 		},
 		"contracts/CharityDonationStorage.sol": {

@@ -64,6 +64,9 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
                 break;
             }
         }
+
+        //emit event
+        emit RemoveAdmin(_admin);
     }
 
     //cancel  campaign before it starts
@@ -76,7 +79,7 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
         );
         require(
             !thisCampaign.isCompleted, 
-            "This Campaign Has Already Been Cancelled!"
+            "This Campaign Has Already Been Completed!"
         );
 
         //deactivate the campaign 
@@ -84,5 +87,56 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
 
         //emit event
         emit CampaignCancelled(_campaignAddress, _campaignId);
+    }
+
+    //refund donors 
+    function RefundDonors(uint256 _campaignId) public  onlyAdmins(msg.sender,_campaignId) {
+        Campaign memory thisCampaign = campaigns[msg.sender][_campaignId-1];
+
+        //check if campaign raised enough money
+        require(
+            thisCampaign.raisedAmount < thisCampaign.targetAmount,
+            "This Campaign Is Successful Cannot be Cancelled!"
+        );
+
+        // Ensure contract has sufficient balance
+        require(
+            address(this).balance >= thisCampaign.raisedAmount, 
+            "Insufficient contract balance"
+        );
+
+        //get donor list
+        CampaignDonors[] storage campaignDonors = donorsForCampaign[msg.sender][_campaignId];
+
+        uint256 totalRefunded = 0;
+        uint256 currentBalance;
+        uint256 updatedBalance;
+
+        //refund
+        for (uint256 i; i < campaignDonors.length; i++) {
+
+            uint256 refundAmount = campaignDonors[i].amount;
+            address donor = campaignDonors[i].by;
+
+            // Prevent re-entrancy and double-spending
+            currentBalance = campaigns[msg.sender][_campaignId-1].raisedAmount;
+            updatedBalance = currentBalance - refundAmount;
+            campaigns[msg.sender][_campaignId-1].raisedAmount = updatedBalance;
+            campaignDonors[i].amount = 0;
+
+            // Transfer funds
+            (bool success, ) = payable(donor).call{value: refundAmount}("");
+            require(success, "Transfer failed");
+
+            // Track total refunded
+            totalRefunded += refundAmount;
+        }
+
+        //check if refund was successful
+        require(
+            thisCampaign.raisedAmount == totalRefunded && campaigns[msg.sender][_campaignId-1].raisedAmount == 0,
+            "Refund Was Unsuccessful!"
+        );
+
     }
 }
