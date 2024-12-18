@@ -167,6 +167,37 @@
 					{
 						"indexed": false,
 						"internalType": "address",
+						"name": "campaignAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "campaignId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "RefundCampaignDonors",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
 						"name": "admin",
 						"type": "address"
 					}
@@ -203,11 +234,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationEvents.sol": {
-			"keccak256": "0x2dea8f14ee9c95dcb2f26e25b4e3d816f995a33e5e9b07b34f922ccf18e23eea",
+			"keccak256": "0xf6445bb9b213661d86d41aa455d757e1e0ab650071c2b649fc0cac5f6a1ce1d4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://788afa29499c2bfef377525fae712354e2698ab2e10772431ad079d529f46e55",
-				"dweb:/ipfs/QmdPpWhTh5wPpbkpKpw8vuuhpj9SjPZq4aLvpd4JS68mRq"
+				"bzz-raw://252b09eb17c42011f8c49b50ff20937824d0d5a99a218e0733e40cbbd5fdd291",
+				"dweb:/ipfs/Qmab67WXZjJzYpHok4Cc1mi9MwfvpJUs8zTCUNAb5foTtz"
 			]
 		}
 	},

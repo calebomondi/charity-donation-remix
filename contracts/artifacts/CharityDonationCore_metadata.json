@@ -167,6 +167,37 @@
 					{
 						"indexed": false,
 						"internalType": "address",
+						"name": "campaignAddress",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "campaignId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "RefundCampaignDonors",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
 						"name": "admin",
 						"type": "address"
 					}
@@ -180,6 +211,11 @@
 						"internalType": "uint256",
 						"name": "_campaignId",
 						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
 					}
 				],
 				"name": "RefundDonors",
@@ -455,6 +491,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "getContractBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "address",
@@ -568,11 +617,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationAdmin.sol": {
-			"keccak256": "0x25f9a5f2011dcfd0b54f5ed3e8391b3a65fb3b5e26bb309c61f7cbe4524f4fa0",
+			"keccak256": "0x905d68138c06dd6a36c9d2a63ee88a54913b7d6a05a6b4d0f563716fda718bc7",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://3cc1ed1814e30b2b8e65e8b2e7dc31e3e3c81405602a75b95e610244cb0cafa1",
-				"dweb:/ipfs/QmVhSt6CzecoVfBhdiQNhYduoDyVVsJkmaXFmynAKPVu4t"
+				"bzz-raw://ea13ae6c401b3adcb454f8fd5a2c03867df363349959fe4e57e27169967f943b",
+				"dweb:/ipfs/QmaUjNZgPhwSk8bKv7QNws74Y7Hh1URZ17fvq6ueU9Eo6L"
 			]
 		},
 		"contracts/CharityDonationCore.sol": {
@@ -584,11 +633,11 @@
 			]
 		},
 		"contracts/CharityDonationEvents.sol": {
-			"keccak256": "0x2dea8f14ee9c95dcb2f26e25b4e3d816f995a33e5e9b07b34f922ccf18e23eea",
+			"keccak256": "0xf6445bb9b213661d86d41aa455d757e1e0ab650071c2b649fc0cac5f6a1ce1d4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://788afa29499c2bfef377525fae712354e2698ab2e10772431ad079d529f46e55",
-				"dweb:/ipfs/QmdPpWhTh5wPpbkpKpw8vuuhpj9SjPZq4aLvpd4JS68mRq"
+				"bzz-raw://252b09eb17c42011f8c49b50ff20937824d0d5a99a218e0733e40cbbd5fdd291",
+				"dweb:/ipfs/Qmab67WXZjJzYpHok4Cc1mi9MwfvpJUs8zTCUNAb5foTtz"
 			]
 		},
 		"contracts/CharityDonationStorage.sol": {

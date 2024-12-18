@@ -29,6 +29,11 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
         require(msg.sender == contractOwner,"Only Contract Owner Can Perform This Action!");
         _;
     }
+
+    //get contract balance by contract owner
+    function getContractBalance() public view onlyContractOwner returns (uint256) {
+        return address(this).balance;
+    }
     
     //Add campaign admins
     function addCampaignAdmin(address _admin) public {
@@ -90,8 +95,8 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
     }
 
     //refund donors 
-    function RefundDonors(uint256 _campaignId) public  onlyAdmins(msg.sender,_campaignId) {
-        Campaign memory thisCampaign = campaigns[msg.sender][_campaignId-1];
+    function RefundDonors(uint256 _campaignId, address _campaignAddress) public  onlyAdmins(_campaignAddress,_campaignId) {
+        Campaign memory thisCampaign = campaigns[_campaignAddress][_campaignId-1];
 
         //check if campaign raised enough money
         require(
@@ -106,7 +111,7 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
         );
 
         //get donor list
-        CampaignDonors[] storage campaignDonors = donorsForCampaign[msg.sender][_campaignId];
+        CampaignDonors[] storage campaignDonors = donorsForCampaign[_campaignAddress][_campaignId];
 
         uint256 totalRefunded = 0;
         uint256 currentBalance;
@@ -119,9 +124,9 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
             address donor = campaignDonors[i].by;
 
             // Prevent re-entrancy and double-spending
-            currentBalance = campaigns[msg.sender][_campaignId-1].raisedAmount;
+            currentBalance = campaigns[_campaignAddress][_campaignId-1].raisedAmount;
             updatedBalance = currentBalance - refundAmount;
-            campaigns[msg.sender][_campaignId-1].raisedAmount = updatedBalance;
+            campaigns[_campaignAddress][_campaignId-1].raisedAmount = updatedBalance;
             campaignDonors[i].amount = 0;
 
             // Transfer funds
@@ -130,11 +135,14 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
 
             // Track total refunded
             totalRefunded += refundAmount;
+
+             //emit event
+            emit RefundCampaignDonors(_campaignAddress, _campaignId, donor, refundAmount);
         }
 
         //check if refund was successful
         require(
-            thisCampaign.raisedAmount == totalRefunded && campaigns[msg.sender][_campaignId-1].raisedAmount == 0,
+            thisCampaign.raisedAmount == totalRefunded && campaigns[_campaignAddress][_campaignId-1].raisedAmount == 0,
             "Refund Was Unsuccessful!"
         );
 
