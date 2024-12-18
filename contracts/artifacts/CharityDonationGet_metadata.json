@@ -208,24 +208,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "_campaignId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_campaignAddress",
-						"type": "address"
-					}
-				],
-				"name": "RefundDonors",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "address",
 						"name": "_admin",
 						"type": "address"
@@ -491,6 +473,174 @@
 				"type": "function"
 			},
 			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					}
+				],
+				"name": "getCampaignBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					}
+				],
+				"name": "getCampaignDetails",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "uint256",
+								"name": "campaign_id",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string",
+								"name": "title",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "description",
+								"type": "string"
+							},
+							{
+								"internalType": "address",
+								"name": "campaignAddress",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "targetAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "raisedAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "deadline",
+								"type": "uint256"
+							},
+							{
+								"internalType": "bool",
+								"name": "isCompleted",
+								"type": "bool"
+							},
+							{
+								"internalType": "bool",
+								"name": "isCancelled",
+								"type": "bool"
+							}
+						],
+						"internalType": "struct CharityDonationStorage.Campaign",
+						"name": "thisCampaign",
+						"type": "tuple"
+					},
+					{
+						"internalType": "uint256",
+						"name": "donorsnumber",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "by",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct CharityDonationStorage.CampaignDonors[]",
+						"name": "campaigndonors",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					}
+				],
+				"name": "getCampaignProgress",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "goalamount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "raisedAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "donorsNumber",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "by",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "amount",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct CharityDonationStorage.CampaignDonors[]",
+						"name": "campaigndonors",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [],
 				"name": "getContractBalance",
 				"outputs": [
@@ -501,6 +651,24 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_campaignId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
+					}
+				],
+				"name": "refundDonors",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -617,11 +785,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationAdmin.sol": {
-			"keccak256": "0x905d68138c06dd6a36c9d2a63ee88a54913b7d6a05a6b4d0f563716fda718bc7",
+			"keccak256": "0x207d83f36d84303bc3bdd7bd38669f9f7da96c7498915bd0f56617a27e2e0804",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ea13ae6c401b3adcb454f8fd5a2c03867df363349959fe4e57e27169967f943b",
-				"dweb:/ipfs/QmaUjNZgPhwSk8bKv7QNws74Y7Hh1URZ17fvq6ueU9Eo6L"
+				"bzz-raw://de98e9f01653a29a1ed526ca5498ecec54a195cdca3ca1713f58b6658f404f7c",
+				"dweb:/ipfs/QmSXYRG6Zpy73eGsyFTBDDvrVp7V7QKNtbwWaiEiHeWwwh"
 			]
 		},
 		"contracts/CharityDonationCore.sol": {
@@ -641,11 +809,11 @@
 			]
 		},
 		"contracts/CharityDonationGet.sol": {
-			"keccak256": "0x852d2aee5d1459615b7365b3f6f540aa23e49370ef605ebccd5391b7b0f313a6",
+			"keccak256": "0x58209f538b3d44726ece214641b99ff53dac25d3766485c4f59aa887d179f867",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://769edde4cd33ded408e8eb70684cda5f4c9937e406f1362de8604ef98e493c10",
-				"dweb:/ipfs/Qmbj1WKeTmmJxVKYDKmSdQyZXkdU3ex9iZMLkp9X5XdqzQ"
+				"bzz-raw://c9e47bf9ec9c17c7f4fb576a63c0157ac582bf15371fd68837802242ccbea294",
+				"dweb:/ipfs/Qmf6rr3JkQ7fDAyD8oBjjoJ3pYd6JmiFCKW2Hi9myZrJzV"
 			]
 		},
 		"contracts/CharityDonationStorage.sol": {

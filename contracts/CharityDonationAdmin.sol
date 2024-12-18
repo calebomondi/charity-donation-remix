@@ -95,7 +95,7 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
     }
 
     //refund donors 
-    function RefundDonors(uint256 _campaignId, address _campaignAddress) public  onlyAdmins(_campaignAddress,_campaignId) {
+    function refundDonors(uint256 _campaignId, address _campaignAddress) public  onlyAdmins(_campaignAddress,_campaignId) {
         Campaign memory thisCampaign = campaigns[_campaignAddress][_campaignId-1];
 
         //check if campaign raised enough money
