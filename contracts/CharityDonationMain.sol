@@ -5,21 +5,9 @@ import "./CharityDonationCore.sol";
 pragma solidity ^0.8.26;
 
 contract CharityDonationMain is CharityDonationCore {
-    //get Campaign progress and details
-    function getCampaignDetails(uint256 _campaignId, address _campaignAddress) public view returns (Campaign memory campaign, uint256 donorsNumber,CampaignDonors[] memory campaigndonors) {
-        //check if campaign is active and has not reached the deadline
-        require(
-            block.timestamp < campaigns[_campaignAddress][_campaignId-1].deadline,
-            "The Campaign Was Completed!"
-        );
-        require(
-            !campaigns[_campaignAddress][_campaignId-1].isCancelled,
-            "This Campaign Has Been Cancelled!"
-        );
-        require(
-            !campaigns[_campaignAddress][_campaignId-1].isCompleted,
-            "This Campaign Has Been Completed"
-        );
+    //get Campaign details
+    function getCampaignDetails(uint256 _campaignId, address _campaignAddress) public view returns 
+    (Campaign memory campaign, uint256 donorsNumber,CampaignDonors[] memory campaigndonors) {
         //get values
         Campaign storage thisCampaign = campaigns[_campaignAddress][_campaignId-1];
 
