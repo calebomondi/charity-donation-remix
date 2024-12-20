@@ -30,7 +30,7 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
         emit AddAdmin(_admin);
     }
 
-    /*
+    
     //Remove Campaign Admin
     function removeCampaignAdmin(address _admin ) external {
         //check if address is an admin
@@ -53,8 +53,8 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
         //emit event
         emit RemoveAdmin(_admin);
     }
-    */
     
+
     //cancel  campaign before it starts
     function cancelCampaign(uint256 _campaignId, address _campaignAddress) external  onlyAdmins(_campaignAddress, _campaignId) {
         //check if campaign has not yet raised any coins and if its still active

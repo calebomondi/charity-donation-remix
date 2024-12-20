@@ -313,6 +313,11 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "balance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "deadline",
 						"type": "uint256"
 					},
@@ -521,6 +526,11 @@
 							},
 							{
 								"internalType": "uint256",
+								"name": "balance",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
 								"name": "deadline",
 								"type": "uint256"
 							},
@@ -536,59 +546,8 @@
 							}
 						],
 						"internalType": "struct CharityDonationStorage.Campaign",
-						"name": "thisCampaign",
+						"name": "campaign",
 						"type": "tuple"
-					},
-					{
-						"internalType": "uint256",
-						"name": "donorsnumber",
-						"type": "uint256"
-					},
-					{
-						"components": [
-							{
-								"internalType": "address",
-								"name": "by",
-								"type": "address"
-							},
-							{
-								"internalType": "uint256",
-								"name": "amount",
-								"type": "uint256"
-							}
-						],
-						"internalType": "struct CharityDonationStorage.CampaignDonors[]",
-						"name": "campaigndonors",
-						"type": "tuple[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_campaignId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_campaignAddress",
-						"type": "address"
-					}
-				],
-				"name": "getCampaignProgress",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "goalamount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "raisedAmount",
-						"type": "uint256"
 					},
 					{
 						"internalType": "uint256",
@@ -611,19 +570,6 @@
 						"internalType": "struct CharityDonationStorage.CampaignDonors[]",
 						"name": "campaigndonors",
 						"type": "tuple[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "getContractBalance",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
 					}
 				],
 				"stateMutability": "view",
@@ -661,25 +607,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "_campaignAddress",
-						"type": "address"
-					}
-				],
-				"name": "viewCampaignAdmins",
-				"outputs": [
-					{
-						"internalType": "address[]",
-						"name": "",
-						"type": "address[]"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [],
 				"name": "viewCampaigns",
 				"outputs": [
@@ -713,6 +640,11 @@
 							{
 								"internalType": "uint256",
 								"name": "raisedAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "balance",
 								"type": "uint256"
 							},
 							{
@@ -813,8 +745,13 @@
 							}
 						],
 						"internalType": "struct CharityDonationStorage.Withdrawals[]",
-						"name": "",
+						"name": "withdrwals",
 						"type": "tuple[]"
+					},
+					{
+						"internalType": "address[]",
+						"name": "admins",
+						"type": "address[]"
 					}
 				],
 				"stateMutability": "view",
@@ -921,19 +858,19 @@
 	},
 	"sources": {
 		"contracts/CharityDonationAdmin.sol": {
-			"keccak256": "0x207d83f36d84303bc3bdd7bd38669f9f7da96c7498915bd0f56617a27e2e0804",
+			"keccak256": "0x924a4c3699d5f6c85f75a88928491bd1951bddd57c50d5997c4af8ebaef42f7c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://de98e9f01653a29a1ed526ca5498ecec54a195cdca3ca1713f58b6658f404f7c",
-				"dweb:/ipfs/QmSXYRG6Zpy73eGsyFTBDDvrVp7V7QKNtbwWaiEiHeWwwh"
+				"bzz-raw://32963a88c740a86483a0ab86bbec70b705ec4e1dc2b8f6edf0bf9caa641f373a",
+				"dweb:/ipfs/QmPUY38PyS6ax2qWsVnutUiWHLFBZvdcLuuQ2X8BrjkYgE"
 			]
 		},
 		"contracts/CharityDonationCore.sol": {
-			"keccak256": "0x8c404f373307daf2036379f7844e5565fa586d5dc78eac5c5e335a30f1f7affc",
+			"keccak256": "0x04f29b4a9b7718ab6ff39284ffdef012444eb68c63bdc9b66f15aa39acb1e91a",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://caa564de7873338088442c0bd2c5f323e457bcdba567f06deed2cd3716e8510b",
-				"dweb:/ipfs/QmPA3vDF8yPTViBGNXMcNYrG94zvFZj2yZHWUQgdCM3NCe"
+				"bzz-raw://1f91ec09557c7adb9f8989451dbd53eaa9ba66f9feab1373b9cded281bdab640",
+				"dweb:/ipfs/Qmc3vwvQk7Ch7Yd7yGueqfXaq8unWJa1tHmjyq4tw7KTgJ"
 			]
 		},
 		"contracts/CharityDonationEvents.sol": {
@@ -944,28 +881,20 @@
 				"dweb:/ipfs/Qmab67WXZjJzYpHok4Cc1mi9MwfvpJUs8zTCUNAb5foTtz"
 			]
 		},
-		"contracts/CharityDonationGet.sol": {
-			"keccak256": "0xc2ee9420691077837b213c2d5b2558f7c749608c1acb672b5afa4643b912959d",
-			"license": "MIT",
-			"urls": [
-				"bzz-raw://108fb7c02c364b812e2d6ac979e6bff359fe11959ffdfad28efd0d20f2251088",
-				"dweb:/ipfs/QmZVkFRcnYGo2mwYkqQng8nzJip9b3dCtLKMqSpQG5R1ne"
-			]
-		},
 		"contracts/CharityDonationMain.sol": {
-			"keccak256": "0xd7517eb4b9efb3260a8c69bacb66c88301aef9b1d952a4a0f85906586ae8eba1",
+			"keccak256": "0x9aecddbc19b5c68c685531ab09aba3d9061b92cbb84aac7b22626639ba1d3411",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8b0426e06e0894fa92a0a6bc6f8d2501771347f2cc1f000d9862dee75deee805",
-				"dweb:/ipfs/QmfEHRybGZ8L6zYb4bhvKeYrLQNKyqLy17m7EbFLdya2Ze"
+				"bzz-raw://8fa579c33d41afed818f469f62f6f835a7213c13e6a7e26dcb9c6fa8851e228d",
+				"dweb:/ipfs/QmYEcyG8ZaepUmw61CZX1xCzewQzd4A9Vf45uAR9hcSVGp"
 			]
 		},
 		"contracts/CharityDonationStorage.sol": {
-			"keccak256": "0x42275462a72e4914c1ee8b6cb2200662ea369dd9c7608bbc3b311b756fc24bad",
+			"keccak256": "0x61d70df3753bda25eeac3999cccb14ba5d4eb47b78d522aebba471f911e4d74f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1ad69d3adf02f055f7e93735030816cf444f39a264730dbc4bdbb079f9ff9142",
-				"dweb:/ipfs/QmUUfyT4vyM4N42CbnuhDTQZTRWKT22sTfXMzy6LdQL1v5"
+				"bzz-raw://98f832ebefa1a8648b1057bdeb80ec2de1d16424052433013d3d2070a7837fa6",
+				"dweb:/ipfs/Qmdr9sfRbLENs4KmjhkgToDwPdushG7ZN7hoyDHWiVrmNX"
 			]
 		}
 	},

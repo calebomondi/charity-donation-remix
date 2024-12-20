@@ -191,6 +191,19 @@
 				],
 				"name": "RefundCampaignDonors",
 				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "admin",
+						"type": "address"
+					}
+				],
+				"name": "RemoveAdmin",
+				"type": "event"
 			}
 		],
 		"devdoc": {
@@ -221,11 +234,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationEvents.sol": {
-			"keccak256": "0xcea2d0436c66f06fddd8396f0c1eeee778d8397c3e104a5f1c6cfd05ee16de52",
+			"keccak256": "0xf6445bb9b213661d86d41aa455d757e1e0ab650071c2b649fc0cac5f6a1ce1d4",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://8065c7d5bfd7a0e4c507735bdfed075bfd9bda19f5d9b1f1b4db6028f5db3ef5",
-				"dweb:/ipfs/QmUaMDSX3ZYrHuqqUQfaVYWJjnNAB9n3pppmX6zezDCVJX"
+				"bzz-raw://252b09eb17c42011f8c49b50ff20937824d0d5a99a218e0733e40cbbd5fdd291",
+				"dweb:/ipfs/Qmab67WXZjJzYpHok4Cc1mi9MwfvpJUs8zTCUNAb5foTtz"
 			]
 		}
 	},
