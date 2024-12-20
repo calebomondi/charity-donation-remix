@@ -208,24 +208,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "uint256",
-						"name": "_campaignId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_campaignAddress",
-						"type": "address"
-					}
-				],
-				"name": "RefundDonors",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "address",
 						"name": "_admin",
 						"type": "address"
@@ -491,16 +473,21 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getContractBalance",
-				"outputs": [
+				"inputs": [
 					{
 						"internalType": "uint256",
-						"name": "",
+						"name": "_campaignId",
 						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "_campaignAddress",
+						"type": "address"
 					}
 				],
-				"stateMutability": "view",
+				"name": "refundDonors",
+				"outputs": [],
+				"stateMutability": "nonpayable",
 				"type": "function"
 			},
 			{
@@ -617,11 +604,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationAdmin.sol": {
-			"keccak256": "0x905d68138c06dd6a36c9d2a63ee88a54913b7d6a05a6b4d0f563716fda718bc7",
+			"keccak256": "0xb6b960e32ad3999e544a3bc783aa2557f920031ed3272a4b39956ccca149f2dc",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://ea13ae6c401b3adcb454f8fd5a2c03867df363349959fe4e57e27169967f943b",
-				"dweb:/ipfs/QmaUjNZgPhwSk8bKv7QNws74Y7Hh1URZ17fvq6ueU9Eo6L"
+				"bzz-raw://3962c737a6a81534f002f61c26a53b52aa356845e74209616b7a1d749b0c4d42",
+				"dweb:/ipfs/QmVSyEnDUZ4r9Zax4GkdHf6joUfPeRt3Jqr2b5UdaH8oyP"
 			]
 		},
 		"contracts/CharityDonationCore.sol": {

@@ -427,19 +427,6 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
-				"name": "getContractBalance",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
 				"inputs": [
 					{
 						"internalType": "uint256",
@@ -543,11 +530,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationAdmin.sol": {
-			"keccak256": "0x207d83f36d84303bc3bdd7bd38669f9f7da96c7498915bd0f56617a27e2e0804",
+			"keccak256": "0xb6b960e32ad3999e544a3bc783aa2557f920031ed3272a4b39956ccca149f2dc",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://de98e9f01653a29a1ed526ca5498ecec54a195cdca3ca1713f58b6658f404f7c",
-				"dweb:/ipfs/QmSXYRG6Zpy73eGsyFTBDDvrVp7V7QKNtbwWaiEiHeWwwh"
+				"bzz-raw://3962c737a6a81534f002f61c26a53b52aa356845e74209616b7a1d749b0c4d42",
+				"dweb:/ipfs/QmVSyEnDUZ4r9Zax4GkdHf6joUfPeRt3Jqr2b5UdaH8oyP"
 			]
 		},
 		"contracts/CharityDonationEvents.sol": {

@@ -100,6 +100,11 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "balance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "deadline",
 						"type": "uint256"
 					},
@@ -263,11 +268,11 @@
 	},
 	"sources": {
 		"contracts/CharityDonationStorage.sol": {
-			"keccak256": "0x42275462a72e4914c1ee8b6cb2200662ea369dd9c7608bbc3b311b756fc24bad",
+			"keccak256": "0x61d70df3753bda25eeac3999cccb14ba5d4eb47b78d522aebba471f911e4d74f",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://1ad69d3adf02f055f7e93735030816cf444f39a264730dbc4bdbb079f9ff9142",
-				"dweb:/ipfs/QmUUfyT4vyM4N42CbnuhDTQZTRWKT22sTfXMzy6LdQL1v5"
+				"bzz-raw://98f832ebefa1a8648b1057bdeb80ec2de1d16424052433013d3d2070a7837fa6",
+				"dweb:/ipfs/Qmdr9sfRbLENs4KmjhkgToDwPdushG7ZN7hoyDHWiVrmNX"
 			]
 		}
 	},

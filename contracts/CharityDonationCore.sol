@@ -27,6 +27,7 @@ contract CharityDonationCore is CharityDonationAdmin {
                 campaignAddress: msg.sender,
                 targetAmount: _target, 
                 raisedAmount  :  0, 
+                balance: 0,
                 deadline: block.timestamp + (_durationdays * 1 days),
                 isCompleted: false,
                 isCancelled: false
@@ -62,8 +63,9 @@ contract CharityDonationCore is CharityDonationAdmin {
         require(_amount > 0 , "Donation Amount Cannot be Zero");
         require(msg.value == _amount, "The Amount And Value Don't Match!");
 
-        //update the campaign raised  amount
+        //update the campaign raised and balance  amount
         campaigns[_campaignAddress][_campaignId-1].raisedAmount += _amount;
+        campaigns[_campaignAddress][_campaignId-1].balance += _amount;
 
         //check if the campaign target has been achieved and deactivate it
         if (campaigns[_campaignAddress][_campaignId-1].raisedAmount >= campaigns[_campaignAddress][_campaignId-1].targetAmount) {
@@ -71,7 +73,7 @@ contract CharityDonationCore is CharityDonationAdmin {
             emit CampaignCompleted(_campaignAddress, _campaignId);
         }
 
-        //add donation to donor records
+        //add donation to donor records and donor to list of campaign donors
         Donation memory newDonation = Donation({
             campaignAddress: _campaignAddress,
             campaignId: _campaignId,
@@ -107,9 +109,9 @@ contract CharityDonationCore is CharityDonationAdmin {
             "Amount Cannot be Zero Or Exceed The Raised Amount!"
         );
         //update campaigns balance
-        uint256 currentbalance = campaigns[_campaignAddress][_campaignId-1].raisedAmount;
+        uint256 currentbalance = campaigns[_campaignAddress][_campaignId-1].balance;
         uint256 updatedbalance = currentbalance - _amount;
-        campaigns[_campaignAddress][_campaignId-1].raisedAmount = updatedbalance;
+        campaigns[_campaignAddress][_campaignId-1].balance = updatedbalance;
 
         //transfer funds to specified address
         (bool success, ) = _to.call{value: _amount}("");

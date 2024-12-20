@@ -11,6 +11,7 @@ contract CharityDonationStorage {
         address campaignAddress;
         uint256 targetAmount;
         uint256 raisedAmount;
+        uint256 balance;
         uint256 deadline;
         bool isCompleted;
         bool isCancelled;

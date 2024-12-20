@@ -6,14 +6,6 @@ import "./CharityDonationEvents.sol";
 pragma solidity ^0.8.26;
 
 contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
-//Define the contract owner
-    address private contractOwner;
-
-    //Initialize Contract Owner
-    constructor() {
-        contractOwner = msg.sender;
-    }
-
     //RBAC modifiers
     modifier onlyAdmins(address _campaignAddress,uint256 _campaignId) {
         //check if campaign exits
@@ -24,22 +16,9 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
         require(admins[_campaignAddress][msg.sender], "Only Admins Can Perform This Action!");
         _;
     }
-
-    modifier  onlyContractOwner() {
-        require(msg.sender == contractOwner,"Only Contract Owner Can Perform This Action!");
-        _;
-    }
-
-    //get contract balance by contract owner
-    function getContractBalance() public view onlyContractOwner returns (uint256) {
-        return address(this).balance;
-    }
     
     //Add campaign admins
     function addCampaignAdmin(address _admin) public {
-        //campaign address cannot be admin
-        require(msg.sender != _admin,"The Campaign Address Cannot Be An Admin!");
-        
         //check if admin is already an admin for campaign address
         require(!admins[msg.sender][_admin], "This Address Is Already An Admin!");
 
@@ -51,6 +30,7 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
         emit AddAdmin(_admin);
     }
 
+    /*
     //Remove Campaign Admin
     function removeCampaignAdmin(address _admin ) external {
         //check if address is an admin
@@ -73,13 +53,14 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
         //emit event
         emit RemoveAdmin(_admin);
     }
-
+    */
+    
     //cancel  campaign before it starts
     function cancelCampaign(uint256 _campaignId, address _campaignAddress) external  onlyAdmins(_campaignAddress, _campaignId) {
         //check if campaign has not yet raised any coins and if its still active
         Campaign memory thisCampaign = campaigns[_campaignAddress][_campaignId-1];
         require(
-            thisCampaign.raisedAmount == 0, 
+            thisCampaign.balance == 0, 
             "This Campaign Has Already Raised Funds! Refund First Then Cancel!"
         );
         require(
@@ -100,13 +81,13 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
 
         //check if campaign raised enough money
         require(
-            thisCampaign.raisedAmount < thisCampaign.targetAmount,
+            thisCampaign.balance < thisCampaign.targetAmount,
             "This Campaign Is Successful Cannot be Cancelled!"
         );
 
         // Ensure contract has sufficient balance
         require(
-            address(this).balance >= thisCampaign.raisedAmount, 
+            address(this).balance >= thisCampaign.balance, 
             "Insufficient contract balance"
         );
 
@@ -124,9 +105,9 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
             address donor = campaignDonors[i].by;
 
             // Prevent re-entrancy and double-spending
-            currentBalance = campaigns[_campaignAddress][_campaignId-1].raisedAmount;
+            currentBalance = campaigns[_campaignAddress][_campaignId-1].balance;
             updatedBalance = currentBalance - refundAmount;
-            campaigns[_campaignAddress][_campaignId-1].raisedAmount = updatedBalance;
+            campaigns[_campaignAddress][_campaignId-1].balance = updatedBalance;
             campaignDonors[i].amount = 0;
 
             // Transfer funds
@@ -142,7 +123,7 @@ contract CharityDonationAdmin is CharityDonationStorage, CharityDonationEvents {
 
         //check if refund was successful
         require(
-            thisCampaign.raisedAmount == totalRefunded && campaigns[_campaignAddress][_campaignId-1].raisedAmount == 0,
+            thisCampaign.raisedAmount == totalRefunded && campaigns[_campaignAddress][_campaignId-1].balance == 0,
             "Refund Was Unsuccessful!"
         );
 

@@ -485,30 +485,6 @@
 						"type": "address"
 					}
 				],
-				"name": "getCampaignBalance",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "_campaignId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_campaignAddress",
-						"type": "address"
-					}
-				],
 				"name": "getCampaignDetails",
 				"outputs": [
 					{
@@ -809,11 +785,11 @@
 			]
 		},
 		"contracts/CharityDonationGet.sol": {
-			"keccak256": "0x58209f538b3d44726ece214641b99ff53dac25d3766485c4f59aa887d179f867",
+			"keccak256": "0xc2ee9420691077837b213c2d5b2558f7c749608c1acb672b5afa4643b912959d",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://c9e47bf9ec9c17c7f4fb576a63c0157ac582bf15371fd68837802242ccbea294",
-				"dweb:/ipfs/Qmf6rr3JkQ7fDAyD8oBjjoJ3pYd6JmiFCKW2Hi9myZrJzV"
+				"bzz-raw://108fb7c02c364b812e2d6ac979e6bff359fe11959ffdfad28efd0d20f2251088",
+				"dweb:/ipfs/QmZVkFRcnYGo2mwYkqQng8nzJip9b3dCtLKMqSpQG5R1ne"
 			]
 		},
 		"contracts/CharityDonationStorage.sol": {
